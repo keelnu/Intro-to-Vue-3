@@ -11,9 +11,14 @@
   <body>
     <div id="app">
       <div class="nav-bar"></div>
-
-      <div class="cart">Cart({{ cart }})</div>
-      <product-display :premium="premium"></product-display>
+      <!-- We access the length property of the cart array to display the number of items in the cart, 'cart' would display an array of IDs inside the button which we don't want -->
+      <div class="cart">Cart({{ cart.length }})</div>
+      <!-- We bind the add-to-cart event emitter to the product-display component and when the button is clicked, we trigger the updateCart function inside main.js -->
+      <product-display
+        :premium="premium"
+        @add-to-cart="updateCart"
+        @remove-from-cart="removeUpdateCart">
+      </product-display>
     </div>
 
     <!-- Import App -->

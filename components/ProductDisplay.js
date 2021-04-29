@@ -2,11 +2,11 @@ app.component('product-display', {
   props: {
     premium: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
-  template: 
-  /*html*/
+  template:
+  /* html */
   `<div class="product-display">
     <div class="product-container">
       <div class="product-image">
@@ -39,44 +39,59 @@ app.component('product-display', {
           v-on:click="addToCart">
           Add to Cart
         </button>
+
+        <button 
+          class="button" 
+          v-on:click="removeFromCart">
+          Remove from Cart
+        </button>
       </div>
     </div>
   </div>`,
   data() {
     return {
-        product: 'Socks',
-        brand: 'Vue Mastery',
-        selectedVariant: 0,
-        details: ['50% cotton', '30% wool', '20% polyester'],
-        variants: [
-          { id: 2234, color: 'green', image: './assets/images/socks_green.jpg', quantity: 50 },
-          { id: 2235, color: 'blue', image: './assets/images/socks_blue.jpg', quantity: 0 },
-        ]
-    }
+      product: 'Socks',
+      brand: 'Vue Mastery',
+      selectedVariant: 0,
+      details: ['50% cotton', '30% wool', '20% polyester'],
+      variants: [
+        {
+          id: 2234, color: 'green', image: './assets/images/socks_green.jpg', quantity: 50,
+        },
+        {
+          id: 2235, color: 'blue', image: './assets/images/socks_blue.jpg', quantity: 0,
+        },
+      ],
+    };
   },
   methods: {
-      addToCart() {
-          this.cart += 1
-      },
-      updateVariant(index) {
-          this.selectedVariant = index
-      }
+    // inside addToCart we are adding an event emitter 'add-to-cart' which will be bound to our product-display component within index.html on line 17
+    // add product id as second argument -> it's the PAYLOAD of the event we're emitting
+    addToCart() {
+      this.$emit('add-to-cart', this.variants[this.selectedVariant].id);
+    },
+    removeFromCart() {
+      this.$emit('remove-from-cart', this.variants[this.selectedVariant].id);
+    },
+    updateVariant(index) {
+      this.selectedVariant = index;
+    },
   },
   computed: {
-      title() {
-          return this.brand + ' ' + this.product
-      },
-      image() {
-          return this.variants[this.selectedVariant].image
-      },
-      inStock() {
-          return this.variants[this.selectedVariant].quantity
-      },
-      shipping() {
-        if (this.premium) {
-          return 'Free'
-        }
-        return 2.99
+    title() {
+      return `${this.brand} ${this.product}`;
+    },
+    image() {
+      return this.variants[this.selectedVariant].image;
+    },
+    inStock() {
+      return this.variants[this.selectedVariant].quantity;
+    },
+    shipping() {
+      if (this.premium) {
+        return 'Free';
       }
-  }
-})
+      return 2.99;
+    },
+  },
+});
