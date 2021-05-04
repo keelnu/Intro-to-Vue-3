@@ -45,7 +45,7 @@ app.component('review-form', {
         recommend: this.recommend,
       }
       // add event emitter called 'review-submitter' and passing in productReview form data as the PAYLOAD
-      this.$emit('review-submitted', productReview)
+      this.$emit('review-submitted', productReview);
       // reset the form fields
       this.name = ''
       this.review = ''
